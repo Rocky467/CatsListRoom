@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Assignment</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="no_internet_try">Check your Internet connection. then try again</string>
+</resources>
