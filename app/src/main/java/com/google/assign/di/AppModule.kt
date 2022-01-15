@@ -6,20 +6,24 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.assign.db.AppDB
+import com.google.assign.utils.API_KEY
+import com.google.assign.utils.AUTH_HEADER
 import com.google.assign.utils.BASE_URL
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 val appModule = module {
 
     single { provideAppDataBase(get()) }
+
+    single { provideAuthInterceptor() }
 
     single { provideGson() }
 
@@ -47,7 +51,15 @@ val loggingInterceptor = HttpLoggingInterceptor().apply {
     level = HttpLoggingInterceptor.Level.BODY
 }
 
+fun provideAuthInterceptor(): Interceptor {
+    return Interceptor { chain ->
+        val newRequest = chain.request().newBuilder().addHeader(AUTH_HEADER, API_KEY).build()
+        chain.proceed(newRequest)
+    }
+}
+
 fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+    .addInterceptor(provideAuthInterceptor())
     .connectTimeout(45, TimeUnit.SECONDS)
     .writeTimeout(45, TimeUnit.SECONDS)
     .readTimeout(45, TimeUnit.SECONDS)
@@ -64,8 +76,9 @@ fun provideRetrofitInstance(client: OkHttpClient, gson: Gson): Retrofit {
         .build()
 }
 
-fun provideRequestOptions(): RequestOptions =
-    RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
+fun provideRequestOptions()= RequestOptions()
+    .centerCrop()
+    .diskCacheStrategy(DiskCacheStrategy.ALL)
 
 fun provideGlideInstance(
     application: Application,

@@ -85,10 +85,6 @@ dependencies {
     kapt "androidx.room:room-compiler:2.4.0"
     implementation "androidx.room:room-paging:2.4.1"
 
-    //Data class mapper
-    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-    kapt 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-
     //Designs - progress loader
     implementation "com.github.ybq:Android-SpinKit:1.4.0"
     //Bottom alert dialog

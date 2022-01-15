@@ -1,18 +1,21 @@
 package com.google.assign.network
 
-import com.google.assign.model.UserData
+import com.google.assign.model.CatsData
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
 
-    companion object{
-        const val USER = "random_user"
-        const val CHAR = "characters"
+    companion object {
+        const val CATS = "v1/images/search"
     }
 
-    @GET(USER)
-    suspend fun getUsers(@Query("size") size: Int): Response<UserData>
+    @GET(CATS)
+    suspend fun getCats(
+        @Query("order") order: String,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
+    ): Response<CatsData>
 
 }

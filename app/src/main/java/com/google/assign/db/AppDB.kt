@@ -4,15 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.google.assign.model.User
+import com.google.assign.model.Cats
 import com.google.assign.utils.DB_NAME
 
-@Database(entities = [UserEntity::class, UserKey::class], version = 1)
-@TypeConverters(DbTypeConverter::class)
+@Database(entities = [Cats::class, CatsKey::class], version = 1, exportSchema = false)
 abstract class AppDB : RoomDatabase() {
 
-    abstract fun userDao(): UserDao
+    abstract fun catsDao(): CatsDao
 
     companion object {
         @Volatile
@@ -20,8 +18,7 @@ abstract class AppDB : RoomDatabase() {
 
         fun getInstance(context: Context): AppDB? {
             if (sInstance == null) {
-                val instance =
-                    Room.databaseBuilder(context.applicationContext, AppDB::class.java, DB_NAME)
+                val instance = Room.databaseBuilder(context.applicationContext, AppDB::class.java, DB_NAME)
                 sInstance = instance.build()
             }
             return sInstance

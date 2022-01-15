@@ -8,13 +8,13 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.google.assign.ui.list.ListFragment"
-        android:label="Users List"
+        android:label="Cats List"
         tools:layout="@layout/list_fragment" />
 
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.google.assign.ui.details.DetailFragment"
-        android:label="User Details"
+        android:label="Cat Details"
         tools:layout="@layout/detail_fragment" />
 
 </navigation>

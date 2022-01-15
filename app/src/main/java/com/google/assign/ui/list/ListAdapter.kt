@@ -6,15 +6,13 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.assign.databinding.ItemLayoutBinding
-import com.google.assign.db.UserEntity
-import com.google.assign.model.User
+import com.google.assign.model.Cats
 
-class ListAdapter(private val userInterface: UserInterface) :
-    PagingDataAdapter<UserEntity, ListAdapter.UserViewHolder>(DiffUtil) {
+class ListAdapter : PagingDataAdapter<Cats, ListAdapter.UserViewHolder>(DiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserViewHolder(binding, userInterface)
+        return UserViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
@@ -22,18 +20,13 @@ class ListAdapter(private val userInterface: UserInterface) :
     }
 
     class UserViewHolder(
-        private val binding: ItemLayoutBinding,
-        private val userInterface: UserInterface
+        private val binding: ItemLayoutBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(user: UserEntity) {
+        fun bind(result: Cats) {
             binding.apply {
-                this.user = user
+                this.cats = result
                 pos.text = (absoluteAdapterPosition + 1).toString()
-            }
-
-            binding.item.setOnClickListener {
-                userInterface.userClick(user)
             }
         }
 
@@ -42,16 +35,11 @@ class ListAdapter(private val userInterface: UserInterface) :
 }
 
 
-interface UserInterface {
-    fun userClick(user: UserEntity)
-}
+val DiffUtil = object : DiffUtil.ItemCallback<Cats>() {
+    override fun areItemsTheSame(oldItem: Cats, newItem: Cats): Boolean =
+        oldItem.id == newItem.id
 
-
-val DiffUtil = object : DiffUtil.ItemCallback<UserEntity>() {
-    override fun areItemsTheSame(oldItem: UserEntity, newItem: UserEntity): Boolean =
-        oldItem.firstName == newItem.firstName
-
-    override fun areContentsTheSame(oldItem: UserEntity, newItem: UserEntity): Boolean =
+    override fun areContentsTheSame(oldItem: Cats, newItem: Cats): Boolean =
         newItem == oldItem
 }
 

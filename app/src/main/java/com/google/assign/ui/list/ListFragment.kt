@@ -7,20 +7,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.google.assign.R
 import com.google.assign.databinding.ListFragmentBinding
-import com.google.assign.db.UserEntity
 import com.google.assign.ui.BaseFragment
 import com.google.assign.ui.ListViewModel
 import com.google.assign.viewModel.SharedViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class ListFragment : BaseFragment(), UserInterface {
+class ListFragment : BaseFragment() {
 
     private lateinit var binding: ListFragmentBinding
     private lateinit var listAdapter: ListAdapter
@@ -65,16 +62,17 @@ class ListFragment : BaseFragment(), UserInterface {
     }
 
     private fun setupRecyclerView() {
-        listAdapter = ListAdapter(this)
+        listAdapter = ListAdapter()
         binding.recyclerView.adapter = listAdapter
 
-        binding.swipeRefresh.setOnRefreshListener {
-
-        }
-        
         listAdapter.addLoadStateListener { loadState ->
-            binding.loader.isVisible = loadState.source.refresh is LoadState.Loading
+            // .mediator or .source decide here
+            binding.loader.isVisible = loadState.mediator?.refresh is LoadState.Loading
         }
+
+        binding.recyclerView.adapter = listAdapter.withLoadStateFooter(
+            footer = ListLoadStateAdapter(listAdapter)
+        )
     }
 
 
@@ -89,10 +87,5 @@ class ListFragment : BaseFragment(), UserInterface {
         }
     }
 
-
-    override fun userClick(user: UserEntity) {
-        sharedViewModel.user = user
-        findNavController().navigate(R.id.detailFragment)
-    }
 
 }

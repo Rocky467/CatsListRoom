@@ -24,7 +24,7 @@ class DetailFragment : BaseFragment() {
     ): View {
         binding = DetailFragmentBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = this@DetailFragment
-            user = sharedViewModel.user
+            cats = sharedViewModel.result
         }
         return binding.root
     }

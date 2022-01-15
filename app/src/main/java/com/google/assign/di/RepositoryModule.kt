@@ -6,7 +6,7 @@ import org.koin.dsl.module
 val repositoryModule = module {
 
     single {
-        return@single provideAppDataBase(get()).userDao()
+        return@single provideAppDataBase(get()).catsDao()
     }
 
     single { Repository(get(), get()) }
