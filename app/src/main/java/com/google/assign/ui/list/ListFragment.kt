@@ -1,6 +1,8 @@
 package com.google.assign.ui.list
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +66,13 @@ class ListFragment : BaseFragment() {
     private fun setupRecyclerView() {
         listAdapter = ListAdapter()
         binding.recyclerView.adapter = listAdapter
+
+        binding.swipeRefresh.setOnRefreshListener {
+            Handler(Looper.getMainLooper()).postDelayed({
+                listAdapter.refresh()
+                binding.swipeRefresh.isRefreshing = false
+            }, 1000)
+        }
 
         listAdapter.addLoadStateListener { loadState ->
             // .mediator or .source decide here
