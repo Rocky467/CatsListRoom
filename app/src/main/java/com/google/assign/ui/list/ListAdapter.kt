@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.assign.databinding.ItemLayoutBinding
 import com.google.assign.model.Cats
 
-class ListAdapter : PagingDataAdapter<Cats, ListAdapter.UserViewHolder>(DiffUtil) {
+class ListAdapter(private val adapterInterface: AdapterInterface) :
+    PagingDataAdapter<Cats, ListAdapter.UserViewHolder>(DiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserViewHolder(binding)
+        return UserViewHolder(binding, adapterInterface)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
@@ -20,20 +21,28 @@ class ListAdapter : PagingDataAdapter<Cats, ListAdapter.UserViewHolder>(DiffUtil
     }
 
     class UserViewHolder(
-        private val binding: ItemLayoutBinding
+        private val binding: ItemLayoutBinding,
+        private val adapterInterface: AdapterInterface
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(result: Cats) {
             binding.apply {
                 this.cats = result
                 pos.text = (absoluteAdapterPosition + 1).toString()
+
+                itemView.setOnClickListener {
+                    adapterInterface.itemClick(result)
+                }
             }
+
         }
 
     }
-
 }
 
+interface AdapterInterface {
+    fun itemClick(result: Cats)
+}
 
 val DiffUtil = object : DiffUtil.ItemCallback<Cats>() {
     override fun areItemsTheSame(oldItem: Cats, newItem: Cats): Boolean =

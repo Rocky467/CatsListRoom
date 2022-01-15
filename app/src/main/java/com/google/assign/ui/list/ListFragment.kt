@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.google.assign.R
 import com.google.assign.databinding.ListFragmentBinding
+import com.google.assign.model.Cats
 import com.google.assign.ui.BaseFragment
 import com.google.assign.ui.ListViewModel
 import com.google.assign.viewModel.SharedViewModel
@@ -19,7 +21,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class ListFragment : BaseFragment() {
+class ListFragment : BaseFragment(), AdapterInterface {
 
     private lateinit var binding: ListFragmentBinding
     private lateinit var listAdapter: ListAdapter
@@ -64,7 +66,7 @@ class ListFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        listAdapter = ListAdapter()
+        listAdapter = ListAdapter(this)
         binding.recyclerView.adapter = listAdapter
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -94,6 +96,11 @@ class ListFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    override fun itemClick(result: Cats) {
+        sharedViewModel.result = result
+        findNavController().navigate(R.id.detailFragment)
     }
 
 

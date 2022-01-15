@@ -4,13 +4,17 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.google.assign.db.AppDB
+import com.google.assign.model.NetworkCat
+import com.google.assign.utils.Resource
 
-class Repository(private val apiService: ApiService, private val appDB: AppDB) {
+class Repository(private val catsRemoteDataSource: CatsRemoteDataSource, private val appDB: AppDB) {
 
     @OptIn(ExperimentalPagingApi::class)
     val userList = Pager(config = PagingConfig(pageSize = 10, enablePlaceholders = true),
-        remoteMediator = RemoteDataMediator(apiService, appDB),
+        remoteMediator = RemoteDataMediator(catsRemoteDataSource.apiService, appDB),
         pagingSourceFactory = { appDB.catsDao().getCats() }
     )
+
+    fun getCatById(catId: String): Resource<NetworkCat> = catsRemoteDataSource.getCatById(catId)
 
 }
