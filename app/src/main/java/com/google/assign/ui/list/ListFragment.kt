@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.google.assign.R
 import com.google.assign.databinding.ListFragmentBinding
@@ -51,18 +50,13 @@ class ListFragment : BaseFragment(), AdapterInterface {
             alertDialog(
                 getString(R.string.no_internet),
                 getString(R.string.no_internet_try),
-                { okClick() },
-                { cancelClick() })
+            ) { okClick() }
         }
     }
 
     private fun okClick() {
         setupRecyclerView()
         observers()
-    }
-
-    private fun cancelClick() {
-        activity?.finish()
     }
 
     private fun setupRecyclerView() {
@@ -77,7 +71,6 @@ class ListFragment : BaseFragment(), AdapterInterface {
         }
 
         listAdapter.addLoadStateListener { loadState ->
-            // .mediator or .source decide here
             binding.loader.isVisible = loadState.mediator?.refresh is LoadState.Loading
         }
 
@@ -98,9 +91,10 @@ class ListFragment : BaseFragment(), AdapterInterface {
         }
     }
 
+
     override fun itemClick(result: Cats) {
         sharedViewModel.result = result
-        findNavController().navigate(R.id.detailFragment)
+        navigateTo(R.id.detailFragment)
     }
 
 

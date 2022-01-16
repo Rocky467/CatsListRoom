@@ -21,6 +21,8 @@ class RemoteDataMediator(
 
     private val startingPage = 1
 
+    private val catsDao = appDB.catsDao()
+
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
@@ -51,16 +53,16 @@ class RemoteDataMediator(
 
             appDB.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    appDB.catsDao().deleteAllKey()
-                    appDB.catsDao().deleteAllCats()
+                    catsDao.deleteAllCatKeys()
+                    catsDao.deleteAllCats()
                 }
                 val prevKey = if (page == startingPage) null else page - 1
                 val nextKey = if (endOfPagination) null else page + 1
                 val keys = response.map {
-                    CatsKey(catId = it.id, prevKey = prevKey, nextKey = nextKey)
+                    CatsKey(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
-                appDB.catsDao().insertKeys(keys)
-                appDB.catsDao().insertCharacter(response)
+                catsDao.insertCatKeys(keys)
+                catsDao.insertCats(response)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPagination)
         } catch (exception: IOException) {
@@ -98,23 +100,21 @@ class RemoteDataMediator(
     private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Cats>): CatsKey? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { repoId ->
-                appDB.catsDao().getKeys(repoId)
+                catsDao.getCatKeys(repoId)
             }
         }
     }
 
     private suspend fun getLastRemoteKey(state: PagingState<Int, Cats>): CatsKey? {
-        return state.pages
-            .lastOrNull { it.data.isNotEmpty() }
+        return state.pages.lastOrNull { it.data.isNotEmpty() }
             ?.data?.lastOrNull()
-            ?.let { cat -> appDB.catsDao().getKeys(cat.id) }
+            ?.let { cat -> catsDao.getCatKeys(cat.id) }
     }
 
     private suspend fun getFirstRemoteKey(state: PagingState<Int, Cats>): CatsKey? {
-        return state.pages
-            .firstOrNull { it.data.isNotEmpty() }
+        return state.pages.firstOrNull { it.data.isNotEmpty() }
             ?.data?.firstOrNull()
-            ?.let { cat -> appDB.catsDao().getKeys(cat.id) }
+            ?.let { cat -> catsDao.getCatKeys(cat.id) }
     }
 
 

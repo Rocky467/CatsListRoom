@@ -6,6 +6,8 @@ import androidx.paging.PagingConfig
 import com.google.assign.db.AppDB
 import com.google.assign.model.NetworkCat
 import com.google.assign.utils.Resource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class Repository(private val catsRemoteDataSource: CatsRemoteDataSource, private val appDB: AppDB) {
 

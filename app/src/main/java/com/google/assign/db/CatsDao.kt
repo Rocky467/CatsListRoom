@@ -12,18 +12,18 @@ interface CatsDao {
 
     //CatKeys
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertKeys(catKey: List<CatsKey>)
+    suspend fun insertCatKeys(catsKey: List<CatsKey>)
 
-    @Query("SELECT * FROM cat_key WHERE catId = :catId")
-    suspend fun getKeys(catId: String): CatsKey?
+    @Query("SELECT * FROM cat_key WHERE id = :id")
+    suspend fun getCatKeys(id: String): CatsKey?
 
     @Query("DELETE FROM cat_key")
-    suspend fun deleteAllKey()
+    suspend fun deleteAllCatKeys()
 
 
     //Cats
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCharacter(cats: List<Cats>)
+    suspend fun insertCats(cats: List<Cats>)
 
     @Query("SELECT * FROM cats")
     fun getCats(): PagingSource<Int, Cats>
