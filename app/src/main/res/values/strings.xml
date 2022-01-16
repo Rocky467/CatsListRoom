@@ -2,6 +2,6 @@
     <string name="app_name">Assignment-Room</string>
     <string name="no_internet">No Internet Connection</string>
     <string name="image">Image</string>
-    <string name="general_error">Failed to load</string>
+    <string name="general_error">Failed to load, please try again</string>
     <string name="no_internet_try">Check your Internet connection. then try again</string>
 </resources>

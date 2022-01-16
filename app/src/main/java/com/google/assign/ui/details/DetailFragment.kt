@@ -4,24 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.assign.databinding.DetailFragmentBinding
 import com.google.assign.ui.BaseFragment
-import com.google.assign.ui.ListViewModel
-import com.google.assign.utils.load
 import com.google.assign.utils.log
-import com.google.assign.viewModel.SharedViewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class DetailFragment : BaseFragment() {
 
     private lateinit var binding: DetailFragmentBinding
-    private val sharedViewModel: SharedViewModel by activityViewModels()
-    private val viewModel: ListViewModel by lazy {
-        getViewModel()
-    }
     private lateinit var catId: String
 
     override fun onCreateView(
@@ -42,7 +31,7 @@ class DetailFragment : BaseFragment() {
     }
 
     private fun observers() {
-        with(viewModel) {
+        with(listViewModel) {
             getCatById(catId)
             getCatById.observe(viewLifecycleOwner, {
                 it?.let {
@@ -52,4 +41,5 @@ class DetailFragment : BaseFragment() {
             })
         }
     }
+
 }

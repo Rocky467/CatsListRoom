@@ -3,16 +3,23 @@ package com.google.assign.ui
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.utils.MDUtil.updatePadding
+import com.google.android.material.snackbar.Snackbar
+import com.google.assign.MainActivity
 import com.google.assign.R
+import com.google.assign.viewModel.SharedViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseFragment : Fragment(), CoroutineScope {
@@ -32,6 +39,16 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         job.cancel()
     }
 
+    val sharedViewModel: SharedViewModel by activityViewModels()
+
+    val listViewModel: ListViewModel by lazy {
+        getViewModel()
+    }
+
+    fun navigateTo(fragmentId: Int) {
+        findNavController().navigate(fragmentId)
+    }
+
     fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
@@ -49,13 +66,15 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     //for ok click
-    fun alertDialog(title: String, msg: String, okClick: () -> Unit) {
+    fun alertDialog() {
         MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
-            title(text = title)
-            message(text = msg)
+            title(text = getString(R.string.no_internet))
+            message(text =  getString(R.string.no_internet_try))
             cornerRadius(10f)
             cancelable(false)
-            positiveButton(text = "Okay") { okClick() }
+            positiveButton(text = "Okay") {
+
+            }
         }
     }
 
@@ -65,8 +84,25 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
 
-    fun navigateTo(fragmentId: Int) {
-        findNavController().navigate(fragmentId)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (!isConnected()){
+            alertDialog()
+        }
+    }
+
+
+    fun View.showError(message: String) {
+        try {
+            val mErrorSnackBar = Snackbar.make(this, message, Snackbar.LENGTH_LONG)
+            mErrorSnackBar.show()
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    fun String.setHomeTitle(){
+        (requireActivity() as MainActivity).supportActionBar?.title = this
     }
 
 }
