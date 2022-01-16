@@ -8,8 +8,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.assign.R
 
 
-fun log(tag: String, msg: String) {
-    Log.d(tag, msg)
+fun log(tag: String, msg: Any) {
+    Log.d(tag, "$msg")
 }
 
 @BindingAdapter("android:loadUrl")

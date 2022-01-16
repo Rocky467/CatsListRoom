@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
-import com.afollestad.materialdialogs.utils.MDUtil.updatePadding
 import com.google.android.material.snackbar.Snackbar
 import com.google.assign.MainActivity
 import com.google.assign.R
@@ -90,7 +89,6 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
             alertDialog()
         }
     }
-
 
     fun View.showError(message: String) {
         try {

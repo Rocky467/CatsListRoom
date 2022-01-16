@@ -32,7 +32,6 @@ class ListViewModel(private val repository: Repository) : ViewModel() {
                 val subList = netRes.data
                 subList?.let {
                     _getCatById.value = it
-
                 }
             }
         }
