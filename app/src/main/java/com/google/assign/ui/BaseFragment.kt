@@ -53,14 +53,14 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     //for both click
-    fun alertDialog(title: String, msg: String, okClick: () -> Unit, cancelClick: () -> Unit?) {
+    fun alertDialog(title: String, msg: String, okClick: () -> Unit, cancelClick: (() -> Unit)? = null) {
         MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
             title(text = title)
             message(text = msg)
             cornerRadius(10f)
             cancelable(false)
             positiveButton(text = "Okay") { okClick() }
-            negativeButton(text = "Cancel") { cancelClick() }
+            negativeButton(text = "Cancel") { cancelClick?.invoke() }
         }
     }
 
