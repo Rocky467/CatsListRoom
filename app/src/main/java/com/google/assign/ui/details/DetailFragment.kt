@@ -35,7 +35,6 @@ class DetailFragment : BaseFragment() {
             getCatById(catId)
             getCatById.observe(viewLifecycleOwner, {
                 it?.let {
-                    log("catHere", it.toString())
                     binding.cats = it
                 }
             })

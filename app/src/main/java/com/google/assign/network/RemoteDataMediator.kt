@@ -1,6 +1,5 @@
 package com.google.assign.network
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -42,7 +41,6 @@ class RemoteDataMediator(
         }
 
         try {
-            log("pageHere", page)
 
             val netResponse = apiService.getCats(order = "Asc", page = page, limit = state.config.pageSize)
 

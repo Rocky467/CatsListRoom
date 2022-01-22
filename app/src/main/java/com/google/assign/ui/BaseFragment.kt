@@ -53,7 +53,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     //for both click
-    fun alertDialog(title: String, msg: String, okClick: () -> Unit, cancelClick: () -> Unit) {
+    fun alertDialog(title: String, msg: String, okClick: () -> Unit, cancelClick: () -> Unit?) {
         MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
             title(text = title)
             message(text = msg)
@@ -65,19 +65,17 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     //for ok click
-    fun alertDialog() {
+    private fun alertDialogNoInternet() {
         MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
             title(text = getString(R.string.no_internet))
             message(text =  getString(R.string.no_internet_try))
             cornerRadius(10f)
             cancelable(false)
-            positiveButton(text = "Okay") {
-
-            }
+            positiveButton(text = "Okay")
         }
     }
 
-    fun isConnected(): Boolean {
+    private fun isConnected(): Boolean {
         val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting
@@ -86,7 +84,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!isConnected()){
-            alertDialog()
+            alertDialogNoInternet()
         }
     }
 
