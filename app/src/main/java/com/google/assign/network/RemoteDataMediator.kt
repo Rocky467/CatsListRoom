@@ -7,7 +7,7 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.google.assign.db.AppDB
 import com.google.assign.db.CatsKey
-import com.google.assign.model.Cats
+import com.google.assign.db.Cats
 import com.google.assign.utils.log
 import retrofit2.HttpException
 import java.io.IOException

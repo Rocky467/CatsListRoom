@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.google.assign.model.Cats
 import com.google.assign.utils.DB_NAME
 
 @Database(entities = [Cats::class, CatsKey::class], version = 1, exportSchema = false)

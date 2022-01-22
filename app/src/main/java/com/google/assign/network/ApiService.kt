@@ -1,6 +1,6 @@
 package com.google.assign.network
 
-import com.google.assign.model.CatsData
+import com.google.assign.db.CatsData
 import com.google.assign.model.NetworkCat
 import retrofit2.Call
 import retrofit2.Response

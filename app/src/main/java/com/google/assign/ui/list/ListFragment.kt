@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.assign.R
 import com.google.assign.databinding.ListFragmentBinding
-import com.google.assign.model.Cats
+import com.google.assign.db.Cats
 import com.google.assign.ui.BaseFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

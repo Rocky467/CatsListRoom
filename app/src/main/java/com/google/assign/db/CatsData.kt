@@ -1,4 +1,4 @@
-package com.google.assign.model
+package com.google.assign.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
