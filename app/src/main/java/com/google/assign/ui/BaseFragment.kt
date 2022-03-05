@@ -93,6 +93,9 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         Snackbar.make(this, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
     }
 
+
+
+
     fun String.setHomeTitle() {
         (requireActivity() as MainActivity).supportActionBar?.title = this
     }
