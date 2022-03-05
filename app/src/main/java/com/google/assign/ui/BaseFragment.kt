@@ -53,7 +53,12 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     //for both click
-    fun alertDialog(title: String, msg: String, okClick: () -> Unit, cancelClick: (() -> Unit)? = null) {
+    fun alertDialog(
+        title: String,
+        msg: String,
+        okClick: () -> Unit,
+        cancelClick: (() -> Unit)? = null
+    ) {
         MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
             title(text = title)
             message(text = msg)
@@ -84,17 +89,18 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (!isConnected()){
+        if (!isConnected()) {
             alertDialogNoInternet()
         }
     }
 
     fun View.showError(message: String) {
-        Snackbar.make(this, "Replace with your own action", Snackbar.LENGTH_LONG)
+        Snackbar
+            .make(this, "Replace with your own action", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show()
     }
 
-    fun String.setHomeTitle(){
+    fun String.setHomeTitle() {
         (requireActivity() as MainActivity).supportActionBar?.title = this
     }
 
