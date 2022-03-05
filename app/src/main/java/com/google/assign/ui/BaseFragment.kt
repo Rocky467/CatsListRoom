@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.coroutines.CoroutineContext
+import androidx.lifecycle.LiveData
 
 abstract class BaseFragment : Fragment(), CoroutineScope {
 
