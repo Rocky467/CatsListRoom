@@ -77,8 +77,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     private fun isConnected(): Boolean {
-        val cm =
-            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
