@@ -16,7 +16,7 @@ import com.google.assign.ui.BaseFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ListFragment : BaseFragment(), AdapterInterface {
+class ListFragment : BaseFragment(), ListAdapter.AdapterInterface {
 
     private lateinit var binding: ListFragmentBinding
     private lateinit var listAdapter: ListAdapter
@@ -60,7 +60,6 @@ class ListFragment : BaseFragment(), AdapterInterface {
 
     private fun observers() {
         with(listViewModel) {
-
             lifecycleScope.launch {
                 users.collectLatest {
                     listAdapter.submitData(it)

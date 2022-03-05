@@ -67,9 +67,9 @@ sealed class ApiResponse<T> {
             }
         }
     }
-}
 
-class ApiSuccessResponse<T>(val data: T) : ApiResponse<T>()
-class ApiSuccessEmptyResponse<T> : ApiResponse<T>()
-class ApiSuccessEmptyResponseWithHeaders<T>(val headers: Map<String, Any>) : ApiResponse<T>()
-class ApiErrorResponse<T>(val errorMessage: String) : ApiResponse<T>()
+    class ApiSuccessResponse<T>(val data: T) : ApiResponse<T>()
+    class ApiSuccessEmptyResponse<T> : ApiResponse<T>()
+    class ApiSuccessEmptyResponseWithHeaders<T>(val headers: Map<String, Any>) : ApiResponse<T>()
+    class ApiErrorResponse<T>(val errorMessage: String) : ApiResponse<T>()
+}

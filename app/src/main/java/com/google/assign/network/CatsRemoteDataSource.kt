@@ -1,14 +1,9 @@
 package com.google.assign.network
 
-import com.google.assign.model.NetworkCat
-import com.google.assign.utils.*
-import retrofit2.Call
+import com.google.assign.utils.Util.validateApi
 
 class CatsRemoteDataSource(val apiService: ApiService) {
 
-    fun getCatById(catId: String): Resource<NetworkCat> {
-        val apiCall = apiService.getCatById(catId)
-        return validateApi(apiCall)
-    }
+    fun getCatById(catId: String) = validateApi(apiService.getCatById(catId))
 
 }

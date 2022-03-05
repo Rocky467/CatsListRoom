@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.assign.databinding.DetailFragmentBinding
 import com.google.assign.ui.BaseFragment
-import com.google.assign.utils.log
 
 class DetailFragment : BaseFragment() {
 
@@ -33,11 +32,11 @@ class DetailFragment : BaseFragment() {
     private fun observers() {
         with(listViewModel) {
             getCatById(catId)
-            getCatById.observe(viewLifecycleOwner, {
+            getCatById.observe(viewLifecycleOwner) {
                 it?.let {
                     binding.cats = it
                 }
-            })
+            }
         }
     }
 

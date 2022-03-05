@@ -1,14 +1,19 @@
 package com.google.assign.di
 
+import com.google.assign.di.AppModule.provideAppDataBase
 import com.google.assign.network.Repository
 import org.koin.dsl.module
 
-val repositoryModule = module {
+object RepositoryModule {
 
-    single {
-        return@single provideAppDataBase(get()).catsDao()
+    val repositoryModule = module {
+
+        single {
+            return@single provideAppDataBase(get()).catsDao()
+        }
+
+        single { Repository(get(), get()) }
+
     }
-
-    single { Repository(get(), get()) }
 
 }

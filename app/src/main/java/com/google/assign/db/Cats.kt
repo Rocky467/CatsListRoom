@@ -3,7 +3,6 @@ package com.google.assign.db
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-class CatsData :ArrayList<Cats>()
 
 @Entity(tableName = "cats")
 data class Cats(
