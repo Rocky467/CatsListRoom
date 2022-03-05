@@ -95,8 +95,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     fun View.showError(message: String) {
-        Snackbar
-            .make(this, "Replace with your own action", Snackbar.LENGTH_LONG)
+        Snackbar.make(this, "Replace with your own action", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show()
     }
 
