@@ -20,7 +20,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.coroutines.CoroutineContext
-import androidx.lifecycle.LiveData
 
 abstract class BaseFragment : Fragment(), CoroutineScope {
 
@@ -96,7 +95,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     fun View.showError(message: String) {
-        Snackbar.make(this, "Replace with your own action", Snackbar.LENGTH_LONG)
+        Snackbar.make(this, "Replace with your own action here", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show()
     }
 
