@@ -54,12 +54,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     //for both click
-    fun alertDialog(
-        title: String,
-        msg: String,
-        okClick: () -> Unit,
-        cancelClick: (() -> Unit)? = null
-    ) {
+    fun alertDialog(title: String, msg: String, okClick: () -> Unit, cancelClick: (() -> Unit)? = null) {
         MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
             title(text = title)
             message(text = msg)
