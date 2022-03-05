@@ -68,7 +68,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     private fun alertDialogNoInternet() {
         MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
             title(text = getString(R.string.no_internet))
-            message(text =  getString(R.string.no_internet_try))
+            message(text = getString(R.string.no_internet_try))
             cornerRadius(10f)
             cancelable(false)
             positiveButton(text = "Okay")
@@ -76,7 +76,8 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     private fun isConnected(): Boolean {
-        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val cm =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
@@ -89,12 +90,8 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     fun View.showError(message: String) {
-        try {
-            val mErrorSnackBar = Snackbar.make(this, message, Snackbar.LENGTH_LONG)
-            mErrorSnackBar.show()
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
+        Snackbar.make(this, "Replace with your own action", Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show()
     }
 
     fun String.setHomeTitle(){
