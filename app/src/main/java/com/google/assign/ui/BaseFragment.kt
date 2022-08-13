@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
-import com.google.android.material.snackbar.Snackbar
 import com.google.assign.MainActivity
 import com.google.assign.R
 import com.google.assign.viewModel.SharedViewModel
@@ -53,16 +52,17 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
-    //for both click
-    fun alertDialog(title: String, msg: String, okClick: () -> Unit, cancelClick: (() -> Unit)? = null) {
-        MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
-            title(text = title)
-            message(text = msg)
-            cornerRadius(10f)
-            cancelable(false)
-            positiveButton(text = "Okay") { okClick() }
-            negativeButton(text = "Cancel") { cancelClick?.invoke() }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (!isConnected()) {
+            alertDialogNoInternet()
         }
+    }
+
+    private fun isConnected(): Boolean {
+        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
 
     //for ok click
@@ -76,21 +76,16 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         }
     }
 
-    private fun isConnected(): Boolean {
-        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = cm.activeNetworkInfo
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (!isConnected()) {
-            alertDialogNoInternet()
+    //for both click
+    fun alertDialog(title: String, msg: String, okClick: () -> Unit, cancelClick: (() -> Unit)? = null) {
+        MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
+            title(text = title)
+            message(text = msg)
+            cornerRadius(10f)
+            cancelable(false)
+            positiveButton(text = "Okay") { okClick() }
+            negativeButton(text = "Cancel") { cancelClick?.invoke() }
         }
-    }
-
-    fun View.showError(message: String) {
-        Snackbar.make(this, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
     }
 
     fun String.setHomeTitle() {
