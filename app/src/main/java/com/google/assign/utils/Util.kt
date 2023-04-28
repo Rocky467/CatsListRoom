@@ -1,6 +1,9 @@
 package com.google.assign.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.View.*
@@ -9,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 
 
+@SuppressLint("StaticFieldLeak")
 object Util {
 
     lateinit var context: Context
@@ -35,6 +39,12 @@ object Util {
 
     fun View.invisible() {
         visibility = INVISIBLE
+    }
+
+    fun delay(sec: Long, function: () -> Unit) {
+        Handler(Looper.getMainLooper()).postDelayed({
+            function()
+        }, sec * 1000)
     }
 
     fun View.onClick(onClick: () -> Unit) {
