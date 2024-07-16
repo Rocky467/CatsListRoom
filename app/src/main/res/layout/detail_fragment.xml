@@ -7,7 +7,7 @@
 
         <variable
             name="cats"
-            type="com.google.assign.model.NetworkCat" />
+            type="com.google.assignment.model.NetworkCat" />
 
     </data>
 

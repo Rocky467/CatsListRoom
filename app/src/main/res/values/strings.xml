@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Assign</string>
+    <string name="app_name">Assignment</string>
     <string name="no_internet">No Internet Connection</string>
     <string name="image">Image</string>
     <string name="general_error">Failed to load, please try again</string>
