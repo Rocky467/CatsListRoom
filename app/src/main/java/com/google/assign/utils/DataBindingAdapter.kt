@@ -6,14 +6,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.assign.R
 
-
 object DataBindingAdapter {
 
     @JvmStatic
     @BindingAdapter("android:loadUrl")
     fun loadUrl(view: ImageView, url: String?) {
-        if (url != null) {
-            view.load(url)
+        url?.let {
+            view.load(it)
         }
     }
 

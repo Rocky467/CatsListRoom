@@ -1,7 +1,7 @@
 package com.google.assign.utils
 
-import com.google.assign.App
 import com.google.assign.R
+import com.google.assign.di.App
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.HttpException

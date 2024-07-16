@@ -1,4 +1,4 @@
-package com.google.assign.ui
+package com.google.assign.ui.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,30 +12,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class ListViewModel(private val repository: Repository) : ViewModel() {
 
-
-    val users = repository.userList.flow.cachedIn(viewModelScope)
-
+    val cats = repository.catsList.flow.cachedIn(viewModelScope)
 
     private val _getCatById = MutableLiveData<NetworkCat>()
     val getCatById: LiveData<NetworkCat> get() = _getCatById
 
     fun getCatById(catId: String) {
         viewModelScope.launch {
-            val netRes = withContext(Dispatchers.IO) {
+            val res = withContext(Dispatchers.IO) {
                 repository.getCatById(catId)
             }
 
-            if (netRes.status == Resource.Status.SUCCESS) {
-                val subList = netRes.data
+            if (res.status == Resource.Status.SUCCESS) {
+                val subList = res.data
                 subList?.let {
                     _getCatById.value = it
                 }
             }
         }
     }
-
 
 }

@@ -9,7 +9,7 @@ import com.google.assign.databinding.ItemLayoutBinding
 import com.google.assign.db.Cats
 
 class ListAdapter(private val adapterInterface: AdapterInterface) :
-    PagingDataAdapter<Cats, ListAdapter.UserViewHolder>(DiffUtils()) {
+    PagingDataAdapter<Cats, ListAdapter.UserViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -34,22 +34,21 @@ class ListAdapter(private val adapterInterface: AdapterInterface) :
                     adapterInterface.itemClick(result)
                 }
             }
-
         }
-
     }
-
 
     interface AdapterInterface {
         fun itemClick(result: Cats)
     }
 
-    private class DiffUtils : DiffUtil.ItemCallback<Cats>() {
-        override fun areItemsTheSame(oldItem: Cats, newItem: Cats): Boolean =
-            oldItem.id == newItem.id
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Cats>() {
+            override fun areItemsTheSame(oldItem: Cats, newItem: Cats): Boolean =
+                oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: Cats, newItem: Cats): Boolean =
-            newItem == oldItem
+            override fun areContentsTheSame(oldItem: Cats, newItem: Cats): Boolean =
+                newItem == oldItem
+        }
     }
 
 }

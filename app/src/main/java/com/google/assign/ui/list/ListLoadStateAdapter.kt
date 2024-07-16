@@ -6,7 +6,6 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.assign.App
 import com.google.assign.R
 import com.google.assign.databinding.NetworkStateItemBinding
 
@@ -35,7 +34,7 @@ class ListLoadStateAdapter(private val adapter: ListAdapter) :
                 progressBar.isVisible = loadState is LoadState.Loading
                 binding.retryButton.isVisible = loadState is LoadState.Error
                 errorMsg.isVisible = !(loadState as? LoadState.Error)?.error?.message.isNullOrBlank()
-                errorMsg.text = App.resource.getString(R.string.no_internet_try)
+                errorMsg.text = binding.root.context.getString(R.string.no_internet_try)
 
                 retryButton.setOnClickListener {
                     adapter.retry()

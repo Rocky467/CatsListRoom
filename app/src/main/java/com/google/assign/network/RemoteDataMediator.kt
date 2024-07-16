@@ -115,5 +115,4 @@ class RemoteDataMediator(
             ?.let { cat -> catsDao.getCatKeys(cat.id) }
     }
 
-
 }

@@ -10,16 +10,18 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.assign.R
+import com.google.assign.base.BaseFragment
 import com.google.assign.databinding.ListFragmentBinding
 import com.google.assign.db.Cats
-import com.google.assign.ui.BaseFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListFragment : BaseFragment(), ListAdapter.AdapterInterface {
 
     private lateinit var binding: ListFragmentBinding
     private lateinit var listAdapter: ListAdapter
+    private val listViewModel: ListViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,7 +31,6 @@ class ListFragment : BaseFragment(), ListAdapter.AdapterInterface {
         binding = ListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,22 +58,19 @@ class ListFragment : BaseFragment(), ListAdapter.AdapterInterface {
         )
     }
 
-
     private fun observers() {
         with(listViewModel) {
             lifecycleScope.launch {
-                users.collectLatest {
+                cats.collectLatest {
                     listAdapter.submitData(it)
                 }
             }
         }
     }
 
-
     override fun itemClick(result: Cats) {
         sharedViewModel.result = result
         navigateTo(R.id.detailFragment)
     }
-
 
 }

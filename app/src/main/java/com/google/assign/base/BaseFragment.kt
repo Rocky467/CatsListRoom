@@ -1,4 +1,4 @@
-package com.google.assign.ui
+package com.google.assign.base
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -13,20 +13,17 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.google.assign.MainActivity
 import com.google.assign.R
-import com.google.assign.viewModel.SharedViewModel
+import com.google.assign.utils.SharedViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 import kotlin.coroutines.CoroutineContext
-
 
 abstract class BaseFragment : Fragment(), CoroutineScope {
 
-    private lateinit var job: Job
+    val sharedViewModel: SharedViewModel by activityViewModels()
 
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    private lateinit var job: Job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +35,8 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         job.cancel()
     }
 
-    val sharedViewModel: SharedViewModel by activityViewModels()
-
-    val listViewModel: ListViewModel by lazy {
-        getViewModel()
-    }
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     fun navigateTo(fragmentId: Int) {
         findNavController().navigate(fragmentId)
@@ -60,7 +54,8 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     private fun isConnected(): Boolean {
-        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val cm =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
@@ -77,7 +72,12 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     }
 
     //for both click
-    fun alertDialog(title: String, msg: String, okClick: () -> Unit, cancelClick: (() -> Unit)? = null) {
+    fun alertDialog(
+        title: String,
+        msg: String,
+        okClick: () -> Unit,
+        cancelClick: (() -> Unit)? = null
+    ) {
         MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
             title(text = title)
             message(text = msg)

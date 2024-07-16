@@ -6,13 +6,11 @@ import androidx.paging.PagingConfig
 import com.google.assign.db.AppDB
 import com.google.assign.model.NetworkCat
 import com.google.assign.utils.Resource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
 class Repository(private val catsRemoteDataSource: CatsRemoteDataSource, private val appDB: AppDB) {
 
     @OptIn(ExperimentalPagingApi::class)
-    val userList = Pager(config = PagingConfig(pageSize = 10, enablePlaceholders = true),
+    val catsList = Pager(config = PagingConfig(pageSize = 10, enablePlaceholders = true),
         remoteMediator = RemoteDataMediator(catsRemoteDataSource.apiService, appDB),
         pagingSourceFactory = { appDB.catsDao().getCats() }
     )

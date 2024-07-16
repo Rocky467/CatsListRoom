@@ -1,8 +1,7 @@
-package com.google.assign.viewModel
+package com.google.assign.utils
 
 import androidx.lifecycle.ViewModel
 import com.google.assign.db.Cats
-
 
 class SharedViewModel : ViewModel() {
 

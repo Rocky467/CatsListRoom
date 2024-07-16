@@ -1,6 +1,5 @@
 package com.google.assign.model
 
-
 import com.google.gson.annotations.SerializedName
 
 data class NetworkCat(
