@@ -1,6 +1,6 @@
 package com.google.assignment.di
 
-import com.google.assignment.di.ApplicationModule.provideAppDataBase
+import com.google.assignment.di.NetworkModule.provideAppDataBase
 import com.google.assignment.network.Repository
 import org.koin.dsl.module
 

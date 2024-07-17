@@ -8,7 +8,6 @@ import androidx.navigation.ui.NavigationUI
 import com.google.assignment.databinding.ActivityMainBinding
 import com.google.assignment.utils.Util.context
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
@@ -26,11 +25,9 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, null)
     }
-
 
 }
 

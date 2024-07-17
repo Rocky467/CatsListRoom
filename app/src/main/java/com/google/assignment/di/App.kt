@@ -2,8 +2,8 @@ package com.google.assignment.di
 
 import android.app.Application
 import android.content.res.Resources
-import com.google.assignment.di.ApplicationModule.applicationModule
 import com.google.assignment.di.DataSourceModule.dataSourceModule
+import com.google.assignment.di.NetworkModule.networkModule
 import com.google.assignment.di.RepositoryModule.repositoryModule
 import com.google.assignment.di.ServiceModule.serviceModule
 import com.google.assignment.di.ViewModelModule.viewModelModule
@@ -22,7 +22,7 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             modules(
-                applicationModule,
+                networkModule,
                 serviceModule,
                 dataSourceModule,
                 repositoryModule,

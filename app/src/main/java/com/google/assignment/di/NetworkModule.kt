@@ -14,26 +14,34 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object ApplicationModule {
+object NetworkModule {
 
-    val applicationModule = module {
+    val networkModule = module {
         single { provideAppDataBase(get()) }
         single { provideAuthInterceptor() }
+        single { provideRetrofit(get(), get()) }
         single { provideConverterFactory() }
-        single { provideRetrofitInstance(get(), get()) }
         single { provideOkHttpClient() }
     }
 
     fun provideAppDataBase(application: Application): AppDB = AppDB.getInstance(application)!!
 
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
     private fun provideAuthInterceptor(): Interceptor = Interceptor { chain ->
         val newRequest = chain.request().newBuilder().addHeader(AUTH_HEADER, API_KEY).build()
         chain.proceed(newRequest)
     }
+
+    private fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(gsonConverterFactory)
+        .build()
+
+    private fun provideConverterFactory(): GsonConverterFactory = GsonConverterFactory
+        .create()
 
     private fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(provideAuthInterceptor())
@@ -43,16 +51,8 @@ object ApplicationModule {
         .addNetworkInterceptor(loggingInterceptor)
         .build()
 
-    private fun provideConverterFactory(): GsonConverterFactory = GsonConverterFactory
-        .create()
-
-    private fun provideRetrofitInstance(
-        okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(okHttpClient)
-        .addConverterFactory(gsonConverterFactory)
-        .build()
+    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
 }
 
