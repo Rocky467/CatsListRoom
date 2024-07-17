@@ -2,6 +2,7 @@ package com.google.assignment.di
 
 import android.app.Application
 import android.content.res.Resources
+import com.google.assignment.di.DataBaseModule.databaseModule
 import com.google.assignment.di.DataSourceModule.dataSourceModule
 import com.google.assignment.di.NetworkModule.networkModule
 import com.google.assignment.di.RepositoryModule.repositoryModule
@@ -26,6 +27,7 @@ class App : Application() {
                 serviceModule,
                 dataSourceModule,
                 repositoryModule,
+                databaseModule,
                 viewModelModule
             )
         }

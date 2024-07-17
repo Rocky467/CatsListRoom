@@ -42,10 +42,6 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         findNavController().navigate(fragmentId)
     }
 
-    fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!isConnected()) {
@@ -90,6 +86,10 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
 
     fun String.setHomeTitle() {
         (requireActivity() as MainActivity).supportActionBar?.title = this
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
 }

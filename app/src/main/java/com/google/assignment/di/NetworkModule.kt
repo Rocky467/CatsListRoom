@@ -1,7 +1,5 @@
 package com.google.assignment.di
 
-import android.app.Application
-import com.google.assignment.db.AppDB
 import com.google.assignment.utils.Const.API_KEY
 import com.google.assignment.utils.Const.AUTH_HEADER
 import com.google.assignment.utils.Const.BASE_URL
@@ -17,14 +15,11 @@ import java.util.concurrent.TimeUnit
 object NetworkModule {
 
     val networkModule = module {
-        single { provideAppDataBase(get()) }
         single { provideAuthInterceptor() }
         single { provideRetrofit(get(), get()) }
         single { provideConverterFactory() }
         single { provideOkHttpClient() }
     }
-
-    fun provideAppDataBase(application: Application): AppDB = AppDB.getInstance(application)!!
 
     private fun provideAuthInterceptor(): Interceptor = Interceptor { chain ->
         val newRequest = chain.request().newBuilder().addHeader(AUTH_HEADER, API_KEY).build()
@@ -54,5 +49,6 @@ object NetworkModule {
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
+
 }
 

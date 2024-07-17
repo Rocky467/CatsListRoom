@@ -14,13 +14,12 @@ object DataBaseModule {
         single { provideDao(get()) }
     }
 
-    private fun provideDataBase(application: Application): AppDB =
-        Room.databaseBuilder(
-            application,
-            AppDB::class.java,
-            DB_NAME
-        ).fallbackToDestructiveMigration().build()
+    private fun provideDataBase(application: Application): AppDB = Room.databaseBuilder(
+        application,
+        AppDB::class.java,
+        DB_NAME
+    ).fallbackToDestructiveMigration().build()
 
     private fun provideDao(appDB: AppDB): CatsDao = appDB.catsDao()
-}
 
+}
