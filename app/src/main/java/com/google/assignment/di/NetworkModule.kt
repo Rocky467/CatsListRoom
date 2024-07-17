@@ -22,8 +22,12 @@ object NetworkModule {
     }
 
     private fun provideAuthInterceptor(): Interceptor = Interceptor { chain ->
-        val newRequest = chain.request().newBuilder().addHeader(AUTH_HEADER, API_KEY).build()
-        chain.proceed(newRequest)
+        chain.proceed(
+            chain.request()
+                .newBuilder()
+                .addHeader(AUTH_HEADER, API_KEY)
+                .build()
+        )
     }
 
     private fun provideRetrofit(

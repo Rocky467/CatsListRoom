@@ -1,5 +1,6 @@
 package com.google.assignment.ui.list
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -25,6 +26,7 @@ class ListAdapter(private val adapterInterface: AdapterInterface) :
         private val adapterInterface: AdapterInterface
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("SetTextI18n")
         fun bind(result: Cats) {
             binding.apply {
                 this.cats = result

@@ -11,8 +11,9 @@ import retrofit2.http.Query
 interface ApiService {
 
     companion object {
-        const val CATS = "v1/images/search"
-        const val CAT_BY_ID = "v1/images/{catId}"
+        private const val IMAGES = "v1/images/"
+        private const val CATS = "${IMAGES}search"
+        private const val CAT_BY_ID = "${IMAGES}{catId}"
     }
 
     @GET(CATS)

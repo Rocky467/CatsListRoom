@@ -43,10 +43,8 @@ class RemoteDataMediator(
 
         try {
 
-            val netResponse =
-                apiService.getCats(order = "Asc", page = page, limit = state.config.pageSize)
-
-            val response = netResponse.body() ?: emptyList()
+            val res = apiService.getCats(order = "Asc", page = page, limit = state.config.pageSize)
+            val response = res.body() ?: emptyList()
             log("dataHere", response)
 
             val endOfPagination = response.isEmpty()
