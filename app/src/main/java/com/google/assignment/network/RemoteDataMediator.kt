@@ -35,6 +35,7 @@ class RemoteDataMediator(
             is MediatorResult.Success -> {
                 return pageKeyData
             }
+
             else -> {
                 pageKeyData as Int
             }
@@ -42,7 +43,8 @@ class RemoteDataMediator(
 
         try {
 
-            val netResponse = apiService.getCats(order = "Asc", page = page, limit = state.config.pageSize)
+            val netResponse =
+                apiService.getCats(order = "Asc", page = page, limit = state.config.pageSize)
 
             val response = netResponse.body() ?: emptyList()
             log("dataHere", response)
@@ -80,11 +82,13 @@ class RemoteDataMediator(
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                 remoteKeys?.nextKey?.minus(1) ?: startingPage
             }
+
             LoadType.APPEND -> {
                 val remoteKeys = getLastRemoteKey(state)
                 val nextKey = remoteKeys?.nextKey
                 return nextKey ?: MediatorResult.Success(endOfPaginationReached = false)
             }
+
             LoadType.PREPEND -> {
                 val remoteKeys = getFirstRemoteKey(state)
                 val prevKey = remoteKeys?.prevKey ?: return MediatorResult.Success(

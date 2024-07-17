@@ -27,8 +27,8 @@ class App : Application() {
                 serviceModule,
                 dataSourceModule,
                 repositoryModule,
-                databaseModule,
-                viewModelModule
+                viewModelModule,
+                databaseModule
             )
         }
     }
