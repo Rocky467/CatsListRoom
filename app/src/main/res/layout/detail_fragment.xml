@@ -26,9 +26,9 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image"
+                loadUrl="@{cats.url}"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:loadUrl="@{cats.url}"
                 android:src="@drawable/default_placeholder"
                 app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"

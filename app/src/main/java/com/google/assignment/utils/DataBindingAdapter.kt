@@ -9,19 +9,15 @@ import com.google.assignment.R
 object DataBindingAdapter {
 
     @JvmStatic
-    @BindingAdapter("android:loadUrl")
-    fun loadUrl(view: ImageView, url: String?) {
+    @BindingAdapter("loadUrl")
+    fun ImageView.loadUrl(url: String?) {
         url?.let {
-            view.load(it)
+            Glide.with(context)
+                .load(it)
+                .placeholder(R.drawable.default_placeholder)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(this)
         }
-    }
-
-    private fun ImageView.load(url: String) {
-        Glide.with(context)
-            .load(url)
-            .placeholder(R.drawable.default_placeholder)
-            .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(this)
     }
 }
