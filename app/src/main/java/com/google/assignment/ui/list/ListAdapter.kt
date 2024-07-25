@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.assignment.databinding.ItemLayoutBinding
 import com.google.assignment.db.Cats
+import com.google.assignment.utils.Util.diffUtil
 
 class ListAdapter(private val adapterInterface: AdapterInterface) :
-    PagingDataAdapter<Cats, ListAdapter.UserViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<Cats, ListAdapter.UserViewHolder>(diffUtil { old, new -> old.id == new.id }) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,16 +41,6 @@ class ListAdapter(private val adapterInterface: AdapterInterface) :
 
     interface AdapterInterface {
         fun itemClick(result: Cats)
-    }
-
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Cats>() {
-            override fun areItemsTheSame(oldItem: Cats, newItem: Cats): Boolean =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: Cats, newItem: Cats): Boolean =
-                newItem == oldItem
-        }
     }
 
 }

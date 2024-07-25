@@ -4,11 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.google.assignment.db.AppDB
-import com.google.assignment.model.NetworkCat
-import com.google.assignment.utils.Resource
+import com.google.assignment.utils.Util.validateApi
 
 class Repository(
-    private val catsRemoteDataSource: CatsRemoteDataSource,
     private val apiService: ApiService,
     private val appDB: AppDB
 ) {
@@ -19,6 +17,6 @@ class Repository(
         pagingSourceFactory = { appDB.catsDao().getCats() }
     )
 
-    fun getCatById(catId: String): Resource<NetworkCat> = catsRemoteDataSource.getCatById(catId)
+    fun getCatById(catId: String) = validateApi(apiService.getCatById(catId))
 
 }

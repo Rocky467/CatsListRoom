@@ -10,6 +10,7 @@ import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 
@@ -27,7 +28,8 @@ object Util {
     }
 
     fun View.showError(message: String) {
-        Snackbar.make(this, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        Snackbar.make(this, "Replace with your own action", Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show()
     }
 
     fun View.visible() {
@@ -61,6 +63,17 @@ object Util {
             is ApiResponse.ApiErrorResponse -> Resource.error(res.errorMessage, null)
             is ApiResponse.ApiSuccessEmptyResponseWithHeaders -> Resource.success(null, res.headers)
         }
+    }
+
+    fun <T : Any> diffUtil(
+        areItemsTheSame: (oldItem: T, newItem: T) -> Boolean
+    ): DiffUtil.ItemCallback<T> = object : DiffUtil.ItemCallback<T>() {
+        override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
+            areItemsTheSame(oldItem, newItem)
+
+        @SuppressLint("DiffUtilEquals")
+        override fun areContentsTheSame(oldItem: T, newItem: T): Boolean =
+            oldItem == newItem
     }
 
 }

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.google.assignment.utils.Const.DB_NAME
 
-@Database(entities = [Cats::class, CatsKey::class], version = 1, exportSchema = false)
+@Database(entities = [Cats::class, CatsKey::class], version = 1)
 abstract class AppDB : RoomDatabase() {
 
     abstract fun catsDao(): CatsDao
@@ -23,13 +23,13 @@ abstract class AppDB : RoomDatabase() {
                         context.applicationContext,
                         AppDB::class.java,
                         DB_NAME
-                    ).fallbackToDestructiveMigration().build()
+                    ).build()
                 }
             }
             return dbInstance!!
         }
     }
 
-    fun clearDB() = this@AppDB.clearAllTables()
+    fun clearDB() = this.clearAllTables()
 
 }
