@@ -12,11 +12,11 @@ class Repository(
 ) {
 
     @OptIn(ExperimentalPagingApi::class)
-    val catsList = Pager(config = PagingConfig(pageSize = 10, enablePlaceholders = true),
+    val catsList = Pager(config = PagingConfig(pageSize = 10),
         remoteMediator = RemoteDataMediator(apiService, appDB),
         pagingSourceFactory = { appDB.catsDao().getCats() }
     )
 
-    fun getCatById(catId: String) = validateApi(apiService.getCatById(catId))
+    suspend fun getCatById(catId: String) = validateApi(apiService.getCatById(catId))
 
 }

@@ -1,6 +1,6 @@
 package com.google.assignment.utils
 
-class Resource<T> constructor(
+class Resource<T>(
     val status: Status,
     val data: T?,
     val headers: Map<String, Any>?,

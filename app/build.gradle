@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+
     //Android - core
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -53,7 +54,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.15.0'
 
     //Pagination - paging3
-    implementation "androidx.paging:paging-runtime-ktx:3.3.0"
+    implementation "androidx.paging:paging-runtime-ktx:3.3.1"
 
     //DI - koin
     implementation "io.insert-koin:koin-androidx-viewmodel:2.2.3"
