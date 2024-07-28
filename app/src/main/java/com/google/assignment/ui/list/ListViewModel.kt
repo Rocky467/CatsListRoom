@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import androidx.paging.liveData
 import com.google.assignment.model.NetworkCat
 import com.google.assignment.network.Repository
 import com.google.assignment.utils.Resource
@@ -14,7 +15,7 @@ import kotlinx.coroutines.withContext
 
 class ListViewModel(private val repository: Repository) : ViewModel() {
 
-    val cats = repository.catsList.flow.cachedIn(viewModelScope)
+    val cats = repository.getCatsList().liveData.cachedIn(viewModelScope)
 
     private val _getCatById = MutableLiveData<NetworkCat>()
     val getCatById: LiveData<NetworkCat> get() = _getCatById

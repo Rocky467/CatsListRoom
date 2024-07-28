@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "cats")
 data class Cats(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     var id: String = "",
     var url: String = "",
     var width: Int = 0,

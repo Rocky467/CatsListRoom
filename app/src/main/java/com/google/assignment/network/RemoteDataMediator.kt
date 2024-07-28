@@ -7,10 +7,7 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.google.assignment.db.AppDB
 import com.google.assignment.db.Cats
-import com.google.assignment.db.CatsKey
-import com.google.assignment.utils.Util.log
-import retrofit2.HttpException
-import java.io.IOException
+import com.google.assignment.db.RemoteKey
 
 @ExperimentalPagingApi
 class RemoteDataMediator(
@@ -18,103 +15,80 @@ class RemoteDataMediator(
     private val appDB: AppDB
 ) : RemoteMediator<Int, Cats>() {
 
-    private val startingPage = 1
-
     private val catsDao = appDB.catsDao()
+    private val remoteKeyDao = appDB.remoteKeyDao()
 
-    override suspend fun initialize(): InitializeAction {
-        return InitializeAction.LAUNCH_INITIAL_REFRESH
-    }
+    override suspend fun load(loadType: LoadType, state: PagingState<Int, Cats>): MediatorResult {
 
-    override suspend fun load(
-        loadType: LoadType,
-        state: PagingState<Int, Cats>
-    ): MediatorResult {
+        return try {
 
-        val page = when (val pageKeyData = getKeyPageData(loadType, state)) {
-            is MediatorResult.Success -> {
-                return pageKeyData
+            val currentPage: Int = when (loadType) {
+
+                LoadType.REFRESH -> {
+                    val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                    remoteKeys?.nextKey?.minus(1) ?: 1
+                }
+
+                LoadType.PREPEND -> {
+                    val remoteKeys = getFirstRemoteKey(state)
+                    val prevPage = remoteKeys?.prevKey ?: return MediatorResult.Success(
+                        endOfPaginationReached = remoteKeys != null
+                    )
+                    prevPage
+                }
+
+                LoadType.APPEND -> {
+                    val remoteKeys = getLastRemoteKey(state)
+                    val nextPage = remoteKeys?.nextKey
+                        ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                    nextPage
+                }
             }
 
-            else -> {
-                pageKeyData as Int
-            }
-        }
-
-        try {
-
-            val res = apiService.getCats(order = "Asc", page = page, limit = state.config.pageSize)
+            val res =
+                apiService.getCats(order = "Asc", page = currentPage, limit = state.config.pageSize)
             val response = res.body() ?: emptyList()
-            log("dataHere", response)
 
             val endOfPagination = response.isEmpty()
 
+            val prevKey = if (currentPage == 1) null else currentPage - 1
+            val nextKey = if (endOfPagination) null else currentPage + 1
+
             appDB.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    catsDao.deleteAllCatKeys()
+                    remoteKeyDao.deleteAllKeys()
                     catsDao.deleteAllCats()
                 }
-                val prevKey = if (page == startingPage) null else page - 1
-                val nextKey = if (endOfPagination) null else page + 1
                 val keys = response.map {
-                    CatsKey(id = it.id, prevKey = prevKey, nextKey = nextKey)
+                    RemoteKey(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
-                catsDao.insertCatKeys(keys)
+                remoteKeyDao.insertKeys(keys)
                 catsDao.insertCats(response)
             }
-            return MediatorResult.Success(endOfPaginationReached = endOfPagination)
-        } catch (exception: IOException) {
-            return MediatorResult.Error(exception)
-        } catch (exception: HttpException) {
-            return MediatorResult.Error(exception)
+            MediatorResult.Success(endOfPagination)
+        } catch (e: Exception) {
+            MediatorResult.Error(e)
         }
     }
 
-
-    private suspend fun getKeyPageData(
-        loadType: LoadType,
-        state: PagingState<Int, Cats>
-    ): Any {
-        return when (loadType) {
-            LoadType.REFRESH -> {
-                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextKey?.minus(1) ?: startingPage
-            }
-
-            LoadType.APPEND -> {
-                val remoteKeys = getLastRemoteKey(state)
-                val nextKey = remoteKeys?.nextKey
-                return nextKey ?: MediatorResult.Success(endOfPaginationReached = false)
-            }
-
-            LoadType.PREPEND -> {
-                val remoteKeys = getFirstRemoteKey(state)
-                val prevKey = remoteKeys?.prevKey ?: return MediatorResult.Success(
-                    endOfPaginationReached = false
-                )
-                prevKey
-            }
-        }
-    }
-
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Cats>): CatsKey? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Cats>): RemoteKey? {
         return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.id?.let { repoId ->
-                catsDao.getCatKeys(repoId)
+            state.closestItemToPosition(position)?.id?.let { id ->
+                remoteKeyDao.getKeys(id)
             }
         }
     }
 
-    private suspend fun getLastRemoteKey(state: PagingState<Int, Cats>): CatsKey? {
+    private suspend fun getLastRemoteKey(state: PagingState<Int, Cats>): RemoteKey? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }
             ?.data?.lastOrNull()
-            ?.let { cat -> catsDao.getCatKeys(cat.id) }
+            ?.let { cat -> remoteKeyDao.getKeys(cat.id) }
     }
 
-    private suspend fun getFirstRemoteKey(state: PagingState<Int, Cats>): CatsKey? {
+    private suspend fun getFirstRemoteKey(state: PagingState<Int, Cats>): RemoteKey? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }
             ?.data?.firstOrNull()
-            ?.let { cat -> catsDao.getCatKeys(cat.id) }
+            ?.let { cat -> remoteKeyDao.getKeys(cat.id) }
     }
 
 }
