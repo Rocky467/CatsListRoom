@@ -31,10 +31,3 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-/*
-* DI
-* Mvvm - LiveData - Repo
-* Coroutine - Flow
-* Data binding, View binding
-*
-*/

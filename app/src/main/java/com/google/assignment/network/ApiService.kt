@@ -24,6 +24,6 @@ interface ApiService {
     ): Response<CatsData>
 
     @GET(CAT_BY_ID)
-    suspend fun getCatById(@Path("catId") catId: String): Call<NetworkCat>
+    fun getCatById(@Path("catId") catId: String): Call<NetworkCat>
 
 }

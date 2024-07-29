@@ -22,7 +22,7 @@ class RemoteDataMediator(
 
         return try {
 
-            val currentPage: Int = when (loadType) {
+            val currentPage = when (loadType) {
 
                 LoadType.REFRESH -> {
                     val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)

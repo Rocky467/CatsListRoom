@@ -19,11 +19,11 @@ class App : Application() {
     }
 
     private val modules = arrayListOf(
+        databaseModule,
         networkModule,
-        serviceModule,
         repositoryModule,
-        viewModelModule,
-        databaseModule
+        serviceModule,
+        viewModelModule
     )
 
     override fun onCreate() {

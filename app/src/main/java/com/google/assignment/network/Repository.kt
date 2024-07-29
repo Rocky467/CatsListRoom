@@ -18,6 +18,6 @@ class Repository(
         pagingSourceFactory = { appDB.catsDao().getCats() }
     )
 
-    suspend fun getCatById(catId: String) = validateApi(apiService.getCatById(catId))
+    fun getCatById(catId: String) = validateApi(apiService.getCatById(catId))
 
 }
