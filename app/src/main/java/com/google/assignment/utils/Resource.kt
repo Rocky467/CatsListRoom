@@ -1,31 +1,10 @@
 package com.google.assignment.utils
 
-class Resource<T>(
-    val status: Status,
-    val data: T?,
-    val headers: Map<String, Any>?,
-    val message: String?
+sealed class Resource<T>(
+    val data: T? = null,
+    val error: String? = null,
 ) {
-
-    companion object {
-
-        @JvmStatic
-        fun <T> success(data: T?, headers: Map<String, Any>? = emptyMap()): Resource<T> {
-            return Resource(Status.SUCCESS, data, headers, null)
-        }
-
-        @JvmStatic
-        fun <T> error(msg: String, data: T?): Resource<T> {
-            return Resource(Status.ERROR, data, emptyMap(), msg)
-        }
-
-        @JvmStatic
-        fun <T> loading(data: T?): Resource<T> {
-            return Resource(Status.LOADING, data, emptyMap(), null)
-        }
-    }
-
-    enum class Status {
-        SUCCESS, ERROR, LOADING
-    }
+    class Loading<T> : Resource<T>()
+    class Success<T>(data: T) : Resource<T>(data = data)
+    class Error<T>(errorMessage: String) : Resource<T>(error = errorMessage)
 }

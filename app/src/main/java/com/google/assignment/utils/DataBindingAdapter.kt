@@ -17,6 +17,7 @@ object DataBindingAdapter {
                 .placeholder(R.drawable.default_placeholder)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate() // to stop .gif
                 .into(this)
         }
     }

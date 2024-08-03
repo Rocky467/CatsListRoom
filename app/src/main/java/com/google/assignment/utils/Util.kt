@@ -12,7 +12,6 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.Call
 
 @SuppressLint("StaticFieldLeak")
 object Util {
@@ -28,7 +27,7 @@ object Util {
     }
 
     fun View.showError(message: String) {
-        Snackbar.make(this, "Replace with your own action", Snackbar.LENGTH_LONG)
+        Snackbar.make(this, message, Snackbar.LENGTH_LONG)
             .setAction("Action", null).show()
     }
 
@@ -56,14 +55,6 @@ object Util {
         }
     }
 
-    fun <T> validateApi(apiCall: Call<T>): Resource<T> {
-        return when (val res = ApiResponse.create(apiCall)) {
-            is ApiResponse.ApiSuccessResponse -> Resource.success(res.data)
-            is ApiResponse.ApiSuccessEmptyResponse -> Resource.success(null)
-            is ApiResponse.ApiErrorResponse -> Resource.error(res.errorMessage, null)
-            is ApiResponse.ApiSuccessEmptyResponseWithHeaders -> Resource.success(null, res.headers)
-        }
-    }
 
     fun <T : Any> diffUtil(
         areItemsTheSame: (oldItem: T, newItem: T) -> Boolean

@@ -3,6 +3,8 @@ package com.google.assignment.ui.details
 import com.google.assignment.base.BaseFragment
 import com.google.assignment.databinding.DetailFragmentBinding
 import com.google.assignment.ui.list.ListViewModel
+import com.google.assignment.utils.Resource
+import com.google.assignment.utils.Util.showError
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : BaseFragment<DetailFragmentBinding>(DetailFragmentBinding::inflate) {
@@ -22,7 +24,18 @@ class DetailFragment : BaseFragment<DetailFragmentBinding>(DetailFragmentBinding
     private fun observers() {
         listViewModel.getCatById(catId)
         listViewModel.getCatById.observe(viewLifecycleOwner) {
-            it?.let { binding.cats = it }
+            when (it) {
+                is Resource.Loading -> {
+                }
+
+                is Resource.Success -> {
+                    binding.cats = it.data
+                }
+
+                is Resource.Error -> {
+                    binding.root.showError(it.error.toString())
+                }
+            }
         }
     }
 

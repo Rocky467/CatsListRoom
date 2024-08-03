@@ -2,7 +2,6 @@ package com.google.assignment.network
 
 import com.google.assignment.model.CatsData
 import com.google.assignment.model.NetworkCat
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -24,6 +23,6 @@ interface ApiService {
     ): Response<CatsData>
 
     @GET(CAT_BY_ID)
-    fun getCatById(@Path("catId") catId: String): Call<NetworkCat>
+    suspend fun getCatById(@Path("catId") catId: String): Response<NetworkCat>
 
 }

@@ -3,13 +3,13 @@ package com.google.assignment.network
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.google.assignment.base.BaseRepository
 import com.google.assignment.db.AppDB
-import com.google.assignment.utils.Util.validateApi
 
 class Repository(
     private val apiService: ApiService,
     private val appDB: AppDB
-) {
+) : BaseRepository() {
 
     @OptIn(ExperimentalPagingApi::class)
     fun getCatsList() = Pager(
@@ -18,6 +18,6 @@ class Repository(
         pagingSourceFactory = { appDB.catsDao().getCats() }
     )
 
-    fun getCatById(catId: String) = validateApi(apiService.getCatById(catId))
+    suspend fun getCatById(catId: String) = safeApiCall { apiService.getCatById(catId) }
 
 }
