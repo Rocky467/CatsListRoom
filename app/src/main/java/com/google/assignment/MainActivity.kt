@@ -6,7 +6,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.assignment.databinding.ActivityMainBinding
-import com.google.assignment.utils.Util.context
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,7 +14,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        context = this
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

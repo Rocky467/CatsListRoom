@@ -10,9 +10,8 @@ import retrofit2.http.Query
 interface ApiService {
 
     companion object {
-        private const val IMAGES = "v1/images/"
-        private const val CATS = "${IMAGES}search"
-        private const val CAT_BY_ID = "${IMAGES}{catId}"
+        private const val CATS = "v1/images/search"
+        private const val CAT_BY_ID = "v1/images/{catId}"
     }
 
     @GET(CATS)

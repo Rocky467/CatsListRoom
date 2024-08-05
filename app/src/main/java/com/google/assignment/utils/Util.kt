@@ -2,6 +2,7 @@ package com.google.assignment.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -11,24 +12,24 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
+import com.afollestad.materialdialogs.LayoutMode
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.google.android.material.snackbar.Snackbar
+import com.google.assignment.R
 
-@SuppressLint("StaticFieldLeak")
 object Util {
-
-    lateinit var context: Context
 
     fun log(tag: String, msg: Any?) {
         Log.d(tag, "$msg")
     }
 
-    fun toast(message: String) {
+    fun toast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     fun View.showError(message: String) {
-        Snackbar.make(this, message, Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show()
+        Snackbar.make(this, message, Snackbar.LENGTH_LONG).setAction("Action", null).show()
     }
 
     fun View.visible() {
@@ -55,6 +56,39 @@ object Util {
         }
     }
 
+    @Suppress("DEPRECATION")
+    fun isConnected(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
+    }
+
+    fun alertDialogNoInternet(context: Context) {
+        MaterialDialog(context, BottomSheet(LayoutMode.WRAP_CONTENT)).show {
+            title(text = context.getString(R.string.no_internet))
+            message(text = context.getString(R.string.no_internet_try))
+            cornerRadius(10f)
+            cancelable(false)
+            positiveButton(text = "Okay")
+        }
+    }
+
+    fun alertDialog(
+        context: Context,
+        title: String,
+        msg: String,
+        okClick: () -> Unit,
+        cancelClick: (() -> Unit)? = null
+    ) {
+        MaterialDialog(context, BottomSheet(LayoutMode.WRAP_CONTENT)).show {
+            title(text = title)
+            message(text = msg)
+            cornerRadius(10f)
+            cancelable(false)
+            positiveButton(text = "Okay") { okClick() }
+            negativeButton(text = "Cancel") { cancelClick?.invoke() }
+        }
+    }
 
     fun <T : Any> diffUtil(
         areItemsTheSame: (oldItem: T, newItem: T) -> Boolean

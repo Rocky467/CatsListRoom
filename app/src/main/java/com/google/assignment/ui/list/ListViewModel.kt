@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class ListViewModel(private val repository: Repository) : ViewModel() {
 
-    val cats = repository.getCatsList().liveData.cachedIn(viewModelScope)
+    val catsList = repository.getCatsList().liveData.cachedIn(viewModelScope)
 
     private val _getCatById = MutableLiveData<Resource<NetworkCat>>()
     val getCatById: LiveData<Resource<NetworkCat>> get() = _getCatById

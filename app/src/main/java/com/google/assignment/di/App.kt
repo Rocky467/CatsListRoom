@@ -1,7 +1,6 @@
 package com.google.assignment.di
 
 import android.app.Application
-import android.content.res.Resources
 import com.google.assignment.di.DataBaseModule.databaseModule
 import com.google.assignment.di.NetworkModule.networkModule
 import com.google.assignment.di.RepositoryModule.repositoryModule
@@ -14,10 +13,6 @@ import org.koin.core.context.stopKoin
 
 class App : Application() {
 
-    companion object {
-        lateinit var resource: Resources
-    }
-
     private val modules = arrayListOf(
         databaseModule,
         networkModule,
@@ -28,7 +23,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        resource = resources
         startKoin {
             androidContext(this@App)
             loadKoinModules(modules)

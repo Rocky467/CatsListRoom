@@ -12,33 +12,37 @@ class ListFragment : BaseFragment<ListFragmentBinding>(ListFragmentBinding::infl
     ListAdapter.AdapterInterface {
 
     private lateinit var listAdapter: ListAdapter
-    private val listViewModel: ListViewModel by viewModel()
+    private val viewModel: ListViewModel by viewModel()
 
     override fun onViewCreated() {
-        setupRecyclerView()
+        setupViews()
         observers()
     }
 
-    private fun setupRecyclerView() {
+    private fun setupViews() {
         listAdapter = ListAdapter(this)
-        binding.recyclerView.adapter = listAdapter
 
-        binding.swipeRefresh.setOnRefreshListener {
-            listAdapter.refresh()
-            binding.swipeRefresh.isRefreshing = false
+        binding.apply {
+            recyclerView.adapter = listAdapter
+
+            swipeRefresh.setOnRefreshListener {
+                listAdapter.refresh()
+                swipeRefresh.isRefreshing = false
+            }
+
+            listAdapter.addLoadStateListener { loadState ->
+                loader.isVisible = loadState.refresh is LoadState.Loading
+                recyclerView.isVisible = loadState.refresh is LoadState.NotLoading
+            }
+
+            recyclerView.adapter = listAdapter.withLoadStateFooter(
+                footer = ListLoadStateAdapter(listAdapter)
+            )
         }
-
-        listAdapter.addLoadStateListener { loadState ->
-            binding.loader.isVisible = loadState.mediator?.refresh is LoadState.Loading
-        }
-
-        binding.recyclerView.adapter = listAdapter.withLoadStateFooter(
-            footer = ListLoadStateAdapter(listAdapter)
-        )
     }
 
     private fun observers() {
-        listViewModel.cats.observe(viewLifecycleOwner) {
+        viewModel.catsList.observe(viewLifecycleOwner) {
             listAdapter.submitData(lifecycle, it)
         }
     }
