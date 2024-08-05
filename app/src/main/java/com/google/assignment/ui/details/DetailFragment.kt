@@ -16,7 +16,7 @@ class DetailFragment : BaseFragment<DetailFragmentBinding>(DetailFragmentBinding
     override fun onViewCreated() {
         viewModel.getCatById(sharedViewModel.result.id)
         viewModel.getCatById.observe(viewLifecycleOwner) {
-            val data = takeIfSuccess(it, binding.loader)
+            val data = fetchData(it, binding.loader)
             binding.cats = data
         }
     }

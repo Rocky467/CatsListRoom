@@ -31,6 +31,4 @@ abstract class AppDB : RoomDatabase() {
         }
     }
 
-    fun clearDB() = this.clearAllTables()
-
 }

@@ -10,11 +10,15 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
 import com.google.assignment.R
 
@@ -30,6 +34,20 @@ object Util {
 
     fun View.showError(message: String) {
         Snackbar.make(this, message, Snackbar.LENGTH_LONG).setAction("Action", null).show()
+    }
+
+    @JvmStatic
+    @BindingAdapter("loadUrl")
+    fun ImageView.loadUrl(url: String?) {
+        url?.let {
+            Glide.with(context)
+                .load(it)
+                .placeholder(R.drawable.default_placeholder)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate() // to stop .gif
+                .into(this)
+        }
     }
 
     fun View.visible() {
