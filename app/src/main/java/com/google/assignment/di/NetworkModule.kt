@@ -15,23 +15,12 @@ import java.util.concurrent.TimeUnit
 object NetworkModule {
 
     val networkModule = module {
-        single { provideRetrofit(get()) }
-        single { provideOkHttpClient() }
+        single { provideRetrofit() }
     }
 
-    private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-        .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
-        .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-        .addInterceptor(authInterceptor)
-        .addNetworkInterceptor(loggingInterceptor)
-        .build()
+    private val logger = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
 
     private val authInterceptor = Interceptor { chain ->
         chain.proceed(
@@ -42,9 +31,18 @@ object NetworkModule {
         )
     }
 
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
+    private val httpClient = OkHttpClient.Builder()
+        .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+        .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
+        .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+        .addInterceptor(authInterceptor)
+        .addNetworkInterceptor(logger)
+        .build()
 
+    private fun provideRetrofit() = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(httpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 }
 
