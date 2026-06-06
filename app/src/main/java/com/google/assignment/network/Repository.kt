@@ -5,8 +5,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.google.assignment.base.BaseRepository
 import com.google.assignment.db.AppDB
+import javax.inject.Inject
 
-class Repository(
+class Repository @Inject constructor(
     private val apiService: ApiService,
     private val appDB: AppDB
 ) : BaseRepository() {

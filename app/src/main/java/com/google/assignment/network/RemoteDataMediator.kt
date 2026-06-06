@@ -8,9 +8,10 @@ import androidx.room.withTransaction
 import com.google.assignment.db.AppDB
 import com.google.assignment.db.Cats
 import com.google.assignment.db.RemoteKey
+import javax.inject.Inject
 
 @ExperimentalPagingApi
-class RemoteDataMediator(
+class RemoteDataMediator @Inject constructor(
     private val apiService: ApiService,
     private val appDB: AppDB
 ) : RemoteMediator<Int, Cats>() {

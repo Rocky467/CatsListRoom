@@ -9,10 +9,13 @@ import androidx.paging.liveData
 import com.google.assignment.model.NetworkCat
 import com.google.assignment.network.Repository
 import com.google.assignment.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ListViewModel(private val repository: Repository) : ViewModel() {
+@HiltViewModel
+class ListViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     val catsList = repository.getCatsList().liveData.cachedIn(viewModelScope)
 
