@@ -30,5 +30,4 @@ abstract class AppDB : RoomDatabase() {
             return dbInstance!!
         }
     }
-
 }

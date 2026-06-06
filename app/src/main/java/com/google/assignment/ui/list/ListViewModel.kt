@@ -9,6 +9,7 @@ import androidx.paging.liveData
 import com.google.assignment.model.NetworkCat
 import com.google.assignment.network.Repository
 import com.google.assignment.utils.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ListViewModel(private val repository: Repository) : ViewModel() {
@@ -18,7 +19,7 @@ class ListViewModel(private val repository: Repository) : ViewModel() {
     private val _getCatById = MutableLiveData<Resource<NetworkCat>>()
     val getCatById: LiveData<Resource<NetworkCat>> get() = _getCatById
 
-    fun getCatById(catId: String) = viewModelScope.launch {
+    fun getCatById(catId: String) = viewModelScope.launch(Dispatchers.IO) {
         _getCatById.postValue(Resource.Loading())
         _getCatById.postValue(repository.getCatById(catId))
     }
