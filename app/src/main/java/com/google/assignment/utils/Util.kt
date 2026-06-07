@@ -11,7 +11,9 @@ import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.afollestad.materialdialogs.LayoutMode
@@ -38,17 +40,13 @@ object Util {
 
     @JvmStatic
     @BindingAdapter("loadUrl")
-    fun ImageView.loadUrl(url: String?) {
-        url?.let {
-            Glide.with(context)
-                .load(it)
-                .placeholder(R.drawable.default_placeholder)
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .dontAnimate() // to stop .gif
-                .into(this)
-        }
-    }
+    fun ImageView.loadUrl(url: String?) = Glide.with(context)
+        .load(url)
+        .placeholder(R.drawable.default_placeholder)
+        .centerCrop()
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .dontAnimate() // to stop .gif
+        .into(this)
 
     fun View.visible() {
         visibility = VISIBLE
@@ -119,5 +117,23 @@ object Util {
             oldItem == newItem
     }
 
+
+    fun <T> loadData(it: Resource<T>, progressBar: ProgressBar): T? {
+        progressBar.isVisible = false
+        when (it) {
+            is Resource.Loading -> {
+                progressBar.isVisible = true
+            }
+
+            is Resource.Success -> {
+                return it.data
+            }
+
+            is Resource.Error -> {
+                progressBar.showError(it.error.toString())
+            }
+        }
+        return null
+    }
 }
 

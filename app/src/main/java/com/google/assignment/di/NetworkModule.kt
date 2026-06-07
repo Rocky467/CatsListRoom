@@ -3,10 +3,10 @@ package com.google.assignment.di
 import android.app.Application
 import com.google.assignment.db.AppDB
 import com.google.assignment.network.ApiService
-import com.google.assignment.utils.Const.API_KEY
 import com.google.assignment.utils.Const.AUTH_HEADER
 import com.google.assignment.utils.Const.BASE_URL
 import com.google.assignment.utils.Const.TIME_OUT
+import com.google.assignment.utils.Keys.API_KEY
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
