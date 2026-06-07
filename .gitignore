@@ -13,3 +13,4 @@
 /captures
 .externalNativeBuild
 .cxx
+app/src/main/java/com/google/assignment/utils/Keys.kt
